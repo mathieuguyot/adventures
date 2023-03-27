@@ -13,7 +13,7 @@ export default function LeafletMap({ gpx, chartData }: any) {
     const [value, setValue] = useState("# test");
     return (
         <div>
-            <div style={{ display: "flex" }}>
+            {/* <div style={{ display: "flex" }}>
                 <Editor
                     height="90vh"
                     width="50%"
@@ -28,15 +28,17 @@ export default function LeafletMap({ gpx, chartData }: any) {
             </div>
             <div style={{ height: 600 }}>
                 <HighchartsReact highcharts={Highcharts} options={chartData} />
-            </div>
+            </div> */}
             <MapContainer
                 style={{ minHeight: "90vh", width: "90%" }}
                 zoom={12}
                 center={gpx.centroid}
             >
                 <TileLayer
+                    //className="map-tiles"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    //url="http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png"
                 />
                 <Polyline positions={gpxToLeafletPolyline(gpx)} />
             </MapContainer>

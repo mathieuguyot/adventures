@@ -12,6 +12,8 @@ const BaseGpxPoint = z.object({
 });
 
 const BaseGpx = z.object({
+    activityId: z.string(),
+    activityType: z.string(),
     name: z.string(),
     time: z.string().datetime(),
     points: z.array(BaseGpxPoint),
@@ -30,6 +32,8 @@ const GpxPoint = BaseGpxPoint.extend({
 });
 
 const Gpx = z.object({
+    activityId: z.string(),
+    activityType: z.string(),
     name: z.string(),
     time: z.string().datetime(),
     points: z.array(GpxPoint),
@@ -59,6 +63,8 @@ export function parseGpx(gpxStr: string): Gpx | null {
             enrichedPoints.length > 0
                 ? enrichedPoints[enrichedPoints.length - 1].accumulatedDistanceMeters
                 : 0,
+        activityId: gpx.activityId,
+        activityType: gpx.activityType,
         time: gpx.time,
         description: gpx.description,
         totalElevationMeters: gpx.totalElevationMeters,
@@ -103,7 +109,9 @@ function parseGpxBase(gpx: string): BaseGpx | null {
     const movingTimeSec = dataDesc.length >= 3 ? Number(dataDesc[2]) : 0;
     const averageSpeedMeterPerSec = dataDesc.length >= 4 ? Number(dataDesc[3]) : 0;
     const totalElevationMeters = dataDesc.length >= 5 ? Number(dataDesc[4]) : 0;
-    const description = dataDesc.length >= 6 ? dataDesc[5] : "";
+    const activityId = dataDesc.length >= 6 ? String(dataDesc[5]) : "";
+    const activityType = dataDesc.length >= 7 ? dataDesc[6] : "";
+    const description = dataDesc.length >= 8 ? dataDesc[7] : "";
     const points = [] as any[];
     const xmlPoints = Array.prototype.slice.call(doc.getElementsByTagName("trkpt"));
     xmlPoints.forEach((val) => {
@@ -130,6 +138,8 @@ function parseGpxBase(gpx: string): BaseGpx | null {
         });
     });
     const parse = BaseGpx.safeParse({
+        activityId,
+        activityType,
         name,
         time,
         points,

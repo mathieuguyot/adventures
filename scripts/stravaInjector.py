@@ -367,7 +367,7 @@ class StravaConverter(Converter):
             md = df_acts.loc[df_acts['Filename'].str.contains(f_activity)].iloc[0, :].to_dict()
             act_id = md['Activity ID']
             act_name = md['Activity Name']
-            act_desc =  str(md['Activity Date']) + '|' + str(md['Elapsed Time']) + '|' + str(md['Moving Time']) + "|" + str(md['Average Speed']) + '|' + str(md['Elevation Gain']) + "|" + md['Activity Description']
+            act_desc =  str(md['Activity Date']) + '|' + str(md['Elapsed Time']) + '|' + str(md['Moving Time']) + "|" + str(md['Average Speed']) + '|' + str(md['Elevation Gain']) + "|" + str(md['Activity ID']) + "|" + str(md['Activity Type']) + "|" + md['Activity Description']
 
             # -- check on values
             # if not act_name.isascii():
@@ -422,7 +422,7 @@ class StravaConverter(Converter):
             md = df_acts.loc[df_acts['Filename'].str.contains(gpx_path)].iloc[0, :].to_dict()
             act_id = md['Activity ID']
             act_name = md['Activity Name']
-            act_desc =  str(md['Activity Date']) + '|' + str(md['Elapsed Time']) + '|' + str(md['Moving Time']) + "|" + str(md['Average Speed']) + '|' + str(md['Elevation Gain']) + "|" + md['Activity Description']
+            act_desc =  str(md['Activity Date']) + '|' + str(md['Elapsed Time']) + '|' + str(md['Moving Time']) + "|" + str(md['Average Speed']) + '|' + str(md['Elevation Gain']) + "|" + str(md['Activity ID']) + "|" + str(md['Activity Type']) + "|" + md['Activity Description']
 
             # -- check on values
             # if not act_name.isascii():

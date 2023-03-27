@@ -11,10 +11,15 @@ async function getGpx(gpxId: string): Promise<Gpx | null> {
     let gpx: Gpx | null = null;
 
     try {
-        const result = await mdbGpxModel.findById(gpxId, { _id: 0, __v: 0, "points._id": 0 });
-        gpx = await result.toObject();
+        const result = await mdbGpxModel.find(
+            { activityId: gpxId },
+            { _id: 0, __v: 0, "points._id": 0 }
+        );
+        if (result.length > 0) {
+            gpx = await result[0].toObject();
+        }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 
     return gpx;

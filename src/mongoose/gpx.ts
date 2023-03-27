@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { Gpx } from "../model/gpx";
 
 const mdbGpxSchema = new mongoose.Schema<Gpx>({
+    activityId: { type: String, required: true },
+    activityType: { type: String, required: true },
     name: { type: String, required: true },
     time: { type: String, required: true },
     centroid: { type: [{ type: Number, required: true }], required: true },
@@ -23,5 +25,4 @@ const mdbGpxSchema = new mongoose.Schema<Gpx>({
     ]
 });
 
-export const mdbGpxModel =
-    (mongoose.models.Gpx as mongoose.Model<Gpx>) || mongoose.model<Gpx>("Gpx", mdbGpxSchema, "gpx");
+export const mdbGpxModel = mongoose.model<Gpx>("Gpx", mdbGpxSchema, "gpx");

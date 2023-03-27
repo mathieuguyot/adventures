@@ -1,61 +1,8 @@
-import dbConnect from "../lib/dbConnect";
-import { mdbGpxModel } from "../mongoose/gpx";
-import Link from "next/link";
-
-import dynamic from "next/dynamic";
-const HeatMap = dynamic(() => import("./heatMap"), { ssr: false });
-
-async function getGpxNames() {
-    await dbConnect();
-
-    /* find all the data in our database */
-    const result = await mdbGpxModel.find();
-    const names = result.map((doc, i) => {
-        return {
-            name: doc.name,
-            id: doc._id.toString(),
-            points: doc.points.map((p) => ({ longitude: p.longitude, latitude: p.latitude })),
-            totalDistance: doc.totalDistanceMeters,
-            totalElevation: doc.totalElevationMeters,
-            description: doc.description,
-            totalTimeSec: doc.totalTimeSec,
-            movingTimeSec: doc.movingTimeSec,
-            averageSpeedMeterPerSec: doc.averageSpeedMeterPerSec,
-            time: doc.time
-        };
-    });
-    return names;
-}
-
 export default async function IndexPage() {
-    const gpxNames = await getGpxNames();
-
     return (
         <div>
-            GPX LIST ({gpxNames.length}):
-            <br />
-            {gpxNames.map(
-                ({
-                    name,
-                    id,
-                    totalDistance,
-                    totalElevation,
-                    totalTimeSec,
-                    movingTimeSec,
-                    description,
-                    averageSpeedMeterPerSec,
-                    time
-                }: any) => (
-                    <div key={id}>
-                        * <Link href={`gpx/${id}`}>{name}</Link> {Math.trunc(totalDistance / 1000)}
-                        km {Math.trunc(totalElevation)}
-                        d+ {totalTimeSec}s {movingTimeSec} s{averageSpeedMeterPerSec}m/s{" "}
-                        {description} - {time}
-                        <br />
-                    </div>
-                )
-            )}
-            <HeatMap gpxs={gpxNames} />
+            Main page
+            {/* <img src="https://previews.dropbox.com/p/thumb/AB3cFBnAlXQ1s7g5LXYRsaqO89xLLVbeHqIsEgcSwDA9GK3SsDmyU4dWj6HOy-a35wACA193rkl9DnpArtmJJyaexVab0qa0k-pPuABbowU5zZiO--zHL6fKZ8jZRj-qdkNyg-ZE3YEmXV_uQ_5mP9zD5nAE21oN_DGNKIAN1OwZpTnKMYpvFJ19h8-v2cOKqqgCHWZdkuJbXF0d-Fc7-vS5b2Afz7jvabUNEQdUTSM1Dzn8kEqWD6bXXiXjV5a1hy2HVE-cN-PYjbU6toNGvbQ5BbuXVGkVneEnThIcsK57elQLUit05LvYYz-IysLYI9rM7thR6eP4rT3Q_UTefelnr1yLDzf6RP9xbdSnsD4q77fXzFND1bVnsRNHzU_f3fez_Rx3LZipn1LicFHYa-SbUwHRoDNBEywPfw_7L-gmgaoO8J2VhYB_fwdg1gD9OQs/p.jpeg" /> */}
         </div>
     );
 }
