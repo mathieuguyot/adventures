@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import dbConnect from "../../../lib/dbConnect";
+import dbConnect from "../../../mongoose/dbConnect";
 import { Adventure } from "../../../model/adventure";
 import { mdbAdventureModel } from "../../../mongoose/adventure";
 

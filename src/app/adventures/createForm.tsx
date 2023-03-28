@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { createAdventure } from "./common";
+import { createAdventure } from "../../model/adventure";
 
 function ErrorChip({ text }: { text: string }) {
     return (

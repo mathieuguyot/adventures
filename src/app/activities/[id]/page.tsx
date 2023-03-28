@@ -1,4 +1,4 @@
-import dbConnect from "../../../lib/dbConnect";
+import dbConnect from "../../../mongoose/dbConnect";
 import { Gpx, gpxToElevationHighchartsData } from "../../../model/gpx";
 import { mdbGpxModel } from "../../../mongoose/gpx";
 

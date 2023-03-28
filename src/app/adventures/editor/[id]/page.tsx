@@ -1,4 +1,4 @@
-import { getAdventure } from "../../common";
+import { getAdventure } from "../../../../mongoose/adventure";
 
 export default async function AdventureEditorPage({ params }) {
     const adventureId = params.id;

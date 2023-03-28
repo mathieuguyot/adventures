@@ -1,6 +1,6 @@
 import { z } from "zod";
 import Highcharts from "highcharts";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 import moment from "moment";
 
 const BaseGpxPoint = z.object({

@@ -25,4 +25,7 @@ const mdbGpxSchema = new mongoose.Schema<Gpx>({
     ]
 });
 
-export const mdbGpxModel = mongoose.model<Gpx>("Gpx", mdbGpxSchema, "gpx");
+export const mdbGpxModel =
+    mongoose.models && "Gpx" in mongoose.models
+        ? (mongoose.models.Gpx as mongoose.Model<Gpx>)
+        : mongoose.model<Gpx>("Gpx", mdbGpxSchema, "gpx");

@@ -1,4 +1,4 @@
-import dbConnect from "../../lib/dbConnect";
+import dbConnect from "../../mongoose/dbConnect";
 import { mdbAdventureModel } from "../../mongoose/adventure";
 import CreateForm from "./createForm";
 import Link from "next/link";

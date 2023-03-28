@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import CreateForm from "./createForm";
 import { act } from "react-dom/test-utils";
 
-jest.mock("./common", () => {
+jest.mock("../../model/adventure", () => {
     return {
         createAdventure: jest.fn(async (name: string) => {
             return name.includes("Ventoux");

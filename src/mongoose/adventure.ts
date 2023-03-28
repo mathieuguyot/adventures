@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Adventure } from "../model/adventure";
+import dbConnect from "./dbConnect";
 
 const mdbAdventureSchema = new mongoose.Schema<Adventure>({
     name: { type: String, required: true },
@@ -14,8 +15,22 @@ const mdbAdventureSchema = new mongoose.Schema<Adventure>({
     ]
 });
 
-export const mdbAdventureModel = mongoose.model<Adventure>(
-    "Adventure",
-    mdbAdventureSchema,
-    "adventure"
-);
+export const mdbAdventureModel =
+    mongoose.models && "Adventure" in mongoose.models
+        ? (mongoose.models.Adventure as mongoose.Model<Adventure>)
+        : mongoose.model<Adventure>("Adventure", mdbAdventureSchema, "adventure");
+
+export async function getAdventure(adventureId: string): Promise<Adventure | null> {
+    await dbConnect();
+
+    let adventure: Adventure | null = null;
+
+    try {
+        const result = await mdbAdventureModel.findById(adventureId, { _id: 0, __v: 0 });
+        adventure = result.toObject();
+    } catch (err) {
+        console.error(err);
+    }
+
+    return adventure;
+}
