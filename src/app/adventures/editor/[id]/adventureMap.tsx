@@ -2,13 +2,13 @@
 
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Polyline } from "react-leaflet";
-import { gpxToLeafletPolyline } from "../../model/gpx";
+import { gpxToLeafletPolyline } from "../../../../model/gpx";
 
-export default function HeatMap({ gpxs }: any) {
+export default function AdventureMap({ gpxs }: any) {
     return (
         <div>
             <MapContainer
-                style={{ minHeight: "100vh", width: "100%" }}
+                style={{ minHeight: "calc(50vh - 16px)", width: "100%" }}
                 zoom={6}
                 center={[46.2276, 2.2137]}
             >

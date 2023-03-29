@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="fr" data-theme="light">
             <body>
                 <Header />
-                {children}
+                <div style={{ height: "calc(100vh - 32px)" }}>{children}</div>
             </body>
         </html>
     );

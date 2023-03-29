@@ -29,11 +29,7 @@ export default async function AdventureEditorPage() {
                     <tbody>
                         {adventures.map((adventure) => (
                             <tr key={adventure.id}>
-                                <td>
-                                    <Link href={`adventures/editor/${adventure.id}`}>
-                                        {adventure.name}
-                                    </Link>
-                                </td>
+                                <td>{adventure.name}</td>
                                 <td>
                                     <Link
                                         className="btn btn-xs"

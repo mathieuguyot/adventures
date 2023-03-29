@@ -1,23 +1,19 @@
 export function Header() {
     return (
-        <div className="navbar bg-base-300">
-            <div className="flex-1">
-                <a href="/" className="btn btn-ghost normal-case text-xl">
-                    oura sports
+        <div className="bg-base-300 flex justify-between">
+            <a href="/" className="btn btn-sm btn-ghost normal-case text-xl">
+                oura sports
+            </a>
+            <div className="flex gap-2">
+                <a href="/adventures" className="btn btn-sm btn-ghost">
+                    Adventures
                 </a>
-            </div>
-            <div className="flex-none">
-                <ul className="menu menu-horizontal px-1">
-                    <li>
-                        <a href="/adventures">Adventures</a>
-                    </li>
-                    <li>
-                        <a href="/activities">Activities</a>
-                    </li>
-                    <li>
-                        <a href="/heatMap">Heat map</a>
-                    </li>
-                </ul>
+                <a href="/activities" className="btn btn-sm btn-ghost">
+                    Activities
+                </a>
+                <a href="/heatMap" className="btn btn-sm btn-ghost">
+                    Heat map
+                </a>
             </div>
         </div>
     );

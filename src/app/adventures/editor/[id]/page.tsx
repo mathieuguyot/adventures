@@ -1,4 +1,5 @@
 import { getAdventure } from "../../../../mongoose/adventure";
+import { AdventureEditor } from "./adventureEditor";
 
 export default async function AdventureEditorPage({ params }) {
     const adventureId = params.id;
@@ -8,9 +9,5 @@ export default async function AdventureEditorPage({ params }) {
         return <>Could not find that adventure</>;
     }
 
-    return (
-        <div>
-            Adventure creator {adventureId} {adventure.name}
-        </div>
-    );
+    return <AdventureEditor adventure={adventure} />;
 }
