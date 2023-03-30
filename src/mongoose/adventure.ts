@@ -26,11 +26,27 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
     let adventure: Adventure | null = null;
 
     try {
-        const result = await mdbAdventureModel.findById(adventureId, { _id: 0, __v: 0 });
+        const result = await mdbAdventureModel.findById(adventureId, {
+            _id: 0,
+            __v: 0,
+            "parts._id": 0
+        });
         adventure = result.toObject();
     } catch (err) {
         console.error(err);
     }
 
     return adventure;
+}
+
+export async function saveAdventure(adventureId: string, adventure: Adventure): Promise<boolean> {
+    await dbConnect();
+
+    try {
+        await mdbAdventureModel.findOneAndReplace({ _id: adventureId }, adventure);
+        return true;
+    } catch (err) {
+        console.error(err);
+    }
+    return false;
 }

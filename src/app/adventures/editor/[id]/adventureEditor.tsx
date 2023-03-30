@@ -2,28 +2,44 @@
 
 import Editor from "@monaco-editor/react";
 import { produce } from "immer";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { Adventure } from "../../../../model/adventure";
+import { Adventure, updateAdventure } from "../../../../model/adventure";
+import { ArrowDown, ArrowUp, Edit, TrashCan } from "@ricons/carbon";
 
 import dynamic from "next/dynamic";
-import { Gpx } from "../../../../model/gpx";
+import { getActivity, Gpx } from "../../../../model/gpx";
 const AdventureMap = dynamic(() => import("./adventureMap"), { ssr: false });
 
-export function AdventureEditor({ adventure }: { adventure: Adventure }) {
+type AdventureEditorProps = {
+    adventure: Adventure;
+    adventureId: string;
+};
+
+// TODO Decouple this huge component and test it !
+// TODO Load spinner for save and and add activity + errors messages
+// TODO modal for delete button
+// TODO do not add activity twice check
+export function AdventureEditor({ adventure, adventureId }: AdventureEditorProps) {
     const [editedAdventure, setEditedAdventure] = useState<Adventure>(adventure);
     const [activities, setActivities] = useState<Gpx[]>([]);
     const [editedField, setEditedField] = useState<string>("header");
     const [activityId, setActivityId] = useState<string>("");
 
-    const addActivityId = useCallback(async () => {
-        const response = await fetch(`/api/gpx/${activityId}`, {
-            method: "GET"
+    useEffect(() => {
+        // TODO Move this server side and pass it as props
+        adventure.parts.forEach((part) => {
+            getActivity(part.activityId).then((gpx) => {
+                if (gpx) {
+                    setActivities((activities) => [...activities, gpx]);
+                }
+            });
         });
-        const respData = await response.text();
-        if (respData != "null") {
-            // TODO check value with zod schema
-            const gpx: Gpx = JSON.parse(respData);
+    }, [adventure]);
+
+    const addActivityId = useCallback(async () => {
+        const gpx = await getActivity(activityId);
+        if (gpx) {
             setEditedAdventure(
                 produce(editedAdventure, (draft) => {
                     draft.parts.push({
@@ -37,7 +53,37 @@ export function AdventureEditor({ adventure }: { adventure: Adventure }) {
         }
     }, [activityId, activities]);
 
-    const value = editedField === "header" ? editedAdventure.mdHeader : editedAdventure.mdFooter;
+    const removeActivity = useCallback((activityId: string) => {
+        setEditedField("header");
+        setActivities((act) => act.filter((a) => a.activityId !== activityId));
+        setEditedAdventure((adv) =>
+            produce(adv, (draft) => {
+                draft.parts = draft.parts.filter((p) => p.activityId !== activityId);
+            })
+        );
+    }, []);
+
+    const moveActivity = useCallback((fromIndex: number, toIndex: number) => {
+        setEditedAdventure((adv) =>
+            produce(adv, (draft) => {
+                const part = draft.parts[fromIndex];
+                draft.parts.splice(fromIndex, 1);
+                draft.parts.splice(toIndex, 0, part);
+            })
+        );
+    }, []);
+
+    const saveActivity = useCallback(async () => {
+        // TODO check for failurek, do loading
+        updateAdventure(adventureId, editedAdventure);
+    }, [editedAdventure, adventureId]);
+
+    const value =
+        editedField === "header"
+            ? editedAdventure.mdHeader
+            : editedField === "footer"
+            ? editedAdventure.mdFooter
+            : editedAdventure.parts[Number(editedField)].mdDescription;
     const setCurrentlyEditedValue = useCallback(
         (newValue: string | undefined) => {
             setEditedAdventure(
@@ -46,6 +92,8 @@ export function AdventureEditor({ adventure }: { adventure: Adventure }) {
                         draft.mdHeader = newValue ? newValue : "";
                     } else if (editedField === "footer") {
                         draft.mdFooter = newValue ? newValue : "";
+                    } else {
+                        draft.parts[Number(editedField)].mdDescription = newValue ? newValue : "";
                     }
                 })
             );
@@ -96,7 +144,9 @@ export function AdventureEditor({ adventure }: { adventure: Adventure }) {
                         >
                             Footer
                         </button>
-                        <button className="btn btn-xs btn-ghost">Save</button>
+                        <button className="btn btn-xs btn-ghost" onClick={saveActivity}>
+                            Save
+                        </button>
                     </div>
                 </div>
                 <div className="flex-grow">
@@ -104,26 +154,53 @@ export function AdventureEditor({ adventure }: { adventure: Adventure }) {
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Date</th>
-                                <th>Edit Markdown</th>
-                                <th>Delete</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {editedAdventure.parts.map((part) => (
-                                <tr>
-                                    <td>{part.name}</td>
-                                    <td>
-                                        {
-                                            activities.filter(
-                                                (a) => a.activityId === part.activityId
-                                            )[0].time
-                                        }
-                                    </td>
-                                    <td>edit</td>
-                                    <td>delete</td>
-                                </tr>
-                            ))}
+                            {editedAdventure.parts.map((part, i) => {
+                                return (
+                                    <tr key={i}>
+                                        <td>{part.name}</td>
+                                        <td>
+                                            <button
+                                                className="btn btn-xs btn-ghost"
+                                                onClick={() => setEditedField(i.toString())}
+                                            >
+                                                <svg width={20} height={20}>
+                                                    <Edit />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                className="btn btn-xs btn-ghost"
+                                                onClick={() => removeActivity(part.activityId)}
+                                            >
+                                                <svg width={20} height={20}>
+                                                    <TrashCan />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                className="btn btn-xs btn-ghost"
+                                                disabled={i === 0}
+                                                onClick={() => moveActivity(i, i - 1)}
+                                            >
+                                                <svg width={20} height={20}>
+                                                    <ArrowUp />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                className="btn btn-xs btn-ghost"
+                                                disabled={i + 1 === editedAdventure.parts.length}
+                                                onClick={() => moveActivity(i, i + 1)}
+                                            >
+                                                <svg width={20} height={20}>
+                                                    <ArrowDown />
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>

@@ -9,5 +9,5 @@ export default async function AdventureEditorPage({ params }) {
         return <>Could not find that adventure</>;
     }
 
-    return <AdventureEditor adventure={adventure} />;
+    return <AdventureEditor adventure={adventure} adventureId={adventureId} />;
 }

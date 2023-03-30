@@ -17,7 +17,7 @@ export default function AdventureMap({ gpxs }: any) {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {gpxs.map((gpx) => (
-                    <Polyline positions={gpxToLeafletPolyline(gpx)} />
+                    <Polyline key={gpx.activityId} positions={gpxToLeafletPolyline(gpx)} />
                 ))}
             </MapContainer>
         </div>

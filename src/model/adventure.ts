@@ -32,3 +32,16 @@ export async function createAdventure(adventureName: string): Promise<boolean> {
     }
     return adventureId.length > 0;
 }
+
+export async function updateAdventure(adventureId: string, adventure: Adventure): Promise<boolean> {
+    const response = await fetch(`/api/adventures/${adventureId}`, {
+        method: "POST",
+        body: JSON.stringify(adventure)
+    });
+    let success = false;
+    if (response.ok) {
+        const respData = JSON.parse(await response.text());
+        success = "success" in respData ? respData.success : success;
+    }
+    return success;
+}

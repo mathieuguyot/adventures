@@ -235,3 +235,11 @@ export function gpxToElevationHighchartsData(gpx: Gpx): Highcharts.Options {
         ]
     };
 }
+
+export async function getActivity(activityId: string): Promise<Gpx | null> {
+    const response = await fetch(`/api/gpx/${activityId}`, {
+        method: "GET"
+    });
+    const gpx = JSON.parse(await response.text());
+    return gpx;
+}
