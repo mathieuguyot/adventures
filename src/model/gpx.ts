@@ -240,6 +240,6 @@ export async function getActivity(activityId: string): Promise<Gpx | null> {
     const response = await fetch(`/api/gpx/${activityId}`, {
         method: "GET"
     });
-    const gpx = JSON.parse(await response.text());
+    const gpx = await JSON.parse(await response.text());
     return gpx;
 }

@@ -2,42 +2,35 @@
 
 import Editor from "@monaco-editor/react";
 import { produce } from "immer";
-import { useCallback, useEffect, useState } from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { useCallback, useState } from "react";
 import { Adventure, updateAdventure } from "../../../../model/adventure";
 import { ArrowDown, ArrowUp, Edit, TrashCan } from "@ricons/carbon";
 
 import dynamic from "next/dynamic";
 import { getActivity, Gpx } from "../../../../model/gpx";
+import MarkdownEditor from "../../../common/markdownEditor";
 const AdventureMap = dynamic(() => import("./adventureMap"), { ssr: false });
 
 type AdventureEditorProps = {
     adventure: Adventure;
+    activities: Gpx[];
     adventureId: string;
 };
 
 // TODO Decouple this huge component and test it !
 // TODO Load spinner for save and and add activity + errors messages
 // TODO modal for delete button
-// TODO do not add activity twice check
-export function AdventureEditor({ adventure, adventureId }: AdventureEditorProps) {
+export function AdventureEditor({ adventure, adventureId, activities }: AdventureEditorProps) {
     const [editedAdventure, setEditedAdventure] = useState<Adventure>(adventure);
-    const [activities, setActivities] = useState<Gpx[]>([]);
+    const [editedActivities, setEditedActivities] = useState<Gpx[]>(activities);
     const [editedField, setEditedField] = useState<string>("header");
     const [activityId, setActivityId] = useState<string>("");
 
-    useEffect(() => {
-        // TODO Move this server side and pass it as props
-        adventure.parts.forEach((part) => {
-            getActivity(part.activityId).then((gpx) => {
-                if (gpx) {
-                    setActivities((activities) => [...activities, gpx]);
-                }
-            });
-        });
-    }, [adventure]);
-
     const addActivityId = useCallback(async () => {
+        if (editedActivities.map((e) => e.activityId).includes(activityId)) {
+            setActivityId("");
+            return;
+        }
         const gpx = await getActivity(activityId);
         if (gpx) {
             setEditedAdventure(
@@ -49,13 +42,14 @@ export function AdventureEditor({ adventure, adventureId }: AdventureEditorProps
                     });
                 })
             );
-            setActivities([...activities, gpx]);
+            setEditedActivities((activities) => [...activities, gpx]);
+            setActivityId("");
         }
-    }, [activityId, activities]);
+    }, [activityId]);
 
     const removeActivity = useCallback((activityId: string) => {
         setEditedField("header");
-        setActivities((act) => act.filter((a) => a.activityId !== activityId));
+        setEditedActivities((act) => act.filter((a) => a.activityId !== activityId));
         setEditedAdventure((adv) =>
             produce(adv, (draft) => {
                 draft.parts = draft.parts.filter((p) => p.activityId !== activityId);
@@ -104,7 +98,7 @@ export function AdventureEditor({ adventure, adventureId }: AdventureEditorProps
     return (
         <div className="grid grid-cols-2" style={{ gridAutoRows: "calc(50vh - 16px)" }}>
             <div>
-                <AdventureMap gpxs={activities} />
+                <AdventureMap gpxs={editedActivities} />
             </div>
             <div>
                 <Editor
@@ -221,8 +215,8 @@ export function AdventureEditor({ adventure, adventureId }: AdventureEditorProps
                     </button>
                 </div>
             </div>
-            <div style={{ overflow: "scroll" }}>
-                <ReactMarkdown className="markdown">{value}</ReactMarkdown>
+            <div style={{ overflowY: "scroll" }}>
+                <MarkdownEditor markdown={value} />
             </div>
         </div>
     );
