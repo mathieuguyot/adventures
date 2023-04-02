@@ -29,7 +29,8 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
         const result = await mdbAdventureModel.findById(adventureId, {
             _id: 0,
             __v: 0,
-            "parts._id": 0
+            "parts._id": 0,
+            "parts.images._id": 0
         });
         adventure = result.toObject();
     } catch (err) {

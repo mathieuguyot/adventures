@@ -2,7 +2,7 @@ import { readFile } from "fs/promises";
 import mongoose from "mongoose";
 import { readdir } from "fs";
 import { parseGpx } from "../src/model/gpx";
-import { mdbGpxModel } from "../src/mongoose/models";
+import { mdbGpxModel } from "../src/mongoose/gpx";
 
 export async function main() {
     const gpxActivitiesDir = "/Users/mathieuguyot/Downloads/export-strava/activities_gpx/";

@@ -3,7 +3,11 @@
 import Editor from "@monaco-editor/react";
 import { produce } from "immer";
 import { useCallback, useState } from "react";
-import { Adventure, updateAdventure } from "../../../../model/adventure";
+import {
+    Adventure,
+    extractLatLongImagesFromText,
+    updateAdventure
+} from "../../../../model/adventure";
 import { ArrowDown, ArrowUp, Edit, TrashCan } from "@ricons/carbon";
 
 import dynamic from "next/dynamic";
@@ -69,7 +73,13 @@ export function AdventureEditor({ adventure, adventureId, activities }: Adventur
 
     const saveActivity = useCallback(async () => {
         // TODO check for failurek, do loading
-        updateAdventure(adventureId, editedAdventure);
+        const newEditedAdventure = produce(editedAdventure, (draft) => {
+            draft.parts.forEach((part) => {
+                part.images = extractLatLongImagesFromText(part.mdDescription);
+            });
+        });
+        setEditedAdventure(newEditedAdventure);
+        updateAdventure(adventureId, newEditedAdventure);
     }, [editedAdventure, adventureId]);
 
     const value =
