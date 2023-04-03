@@ -2,6 +2,8 @@ import dbConnect from "../../mongoose/dbConnect";
 import { mdbAdventureModel } from "../../mongoose/adventure";
 import CreateForm from "./createForm";
 import Link from "next/link";
+import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 
 async function getAdventures(): Promise<{ id: string; name: string }[]> {
     await dbConnect();
@@ -13,6 +15,8 @@ async function getAdventures(): Promise<{ id: string; name: string }[]> {
 }
 
 export default async function AdventureEditorPage() {
+    const session = await getServerSession(authOptions);
+
     const adventures = await getAdventures();
 
     return (
@@ -23,7 +27,7 @@ export default async function AdventureEditorPage() {
                         <tr>
                             <th>Name ({adventures.length} Activities in list)</th>
                             <th>View</th>
-                            <th>Edit</th>
+                            {session && <th>Edit</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -38,21 +42,23 @@ export default async function AdventureEditorPage() {
                                         view
                                     </Link>
                                 </td>
-                                <td>
-                                    <Link
-                                        className="btn btn-xs"
-                                        href={`adventures/editor/${adventure.id}`}
-                                    >
-                                        edit
-                                    </Link>
-                                </td>
+                                {session && (
+                                    <td>
+                                        <Link
+                                            className="btn btn-xs"
+                                            href={`adventures/editor/${adventure.id}`}
+                                        >
+                                            edit
+                                        </Link>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
             <br />
-            <CreateForm />
+            {session && <CreateForm />}
         </div>
     );
 }

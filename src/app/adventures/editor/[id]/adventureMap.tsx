@@ -31,7 +31,7 @@ function imageDimensionBasedOnZoom(zoom: number) {
 
 export default function AdventureMap({ gpxs }: any) {
     const [zoom, setZoom] = useState(6);
-    console.log(zoom);
+
     return (
         <div>
             <MapContainer

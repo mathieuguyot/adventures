@@ -16,4 +16,8 @@ Welcome to oura sports, It's a personal sport portofolio project built with Next
 -   [Leaflet](https://github.com/Leaflet/Leaflet) - To handle cartography stuff
 -   [fit2gpx](https://github.com/dodo-saba/fit2gpx) - To parse strava profile export, converting .fit to .gpx and enriching .gpx files (bundled and edited in this project to handle minor changes)
 
+# Personal notes, TODOS
+
+-   Add loading screen & error 404 page
+
 License MIT © [Mathieu Guyot](https://github.com/mathieuguyot)

@@ -3,6 +3,9 @@ import { mdbGpxModel } from "../../mongoose/gpx";
 import Link from "next/link";
 import { Gpx } from "../../model/gpx";
 import moment from "moment";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+import { redirect } from "next/navigation";
 
 async function getGpxActivities(): Promise<Gpx[]> {
     await dbConnect();
@@ -11,6 +14,11 @@ async function getGpxActivities(): Promise<Gpx[]> {
 }
 
 export default async function ActivitiesPage() {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        redirect("/");
+    }
+
     const gpxActivities = await getGpxActivities();
 
     return (

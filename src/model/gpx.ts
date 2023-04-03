@@ -98,20 +98,21 @@ function parseGpxBase(gpx: string): BaseGpx | null {
             ? doc.getElementsByTagName("name")[0].textContent
             : null;
     const dataDesc =
-        doc.getElementsByTagName("desc").length > 0
-            ? doc.getElementsByTagName("desc")[0].textContent.split("|")
+        doc.getElementsByTagName("desc").length > 0 &&
+        doc.getElementsByTagName("desc")[0].textContent !== null
+            ? (doc.getElementsByTagName("desc")[0].textContent as string).split("|")
             : null;
     const time =
-        dataDesc.length >= 1
+        dataDesc && dataDesc.length >= 1
             ? moment(dataDesc[0], "MMM DD, YYYY, h:m:s A").utc(true).format().toString()
             : Date.now().toString();
-    const totalTimeSec = dataDesc.length >= 2 ? Number(dataDesc[1]) : 0;
-    const movingTimeSec = dataDesc.length >= 3 ? Number(dataDesc[2]) : 0;
-    const averageSpeedMeterPerSec = dataDesc.length >= 4 ? Number(dataDesc[3]) : 0;
-    const totalElevationMeters = dataDesc.length >= 5 ? Number(dataDesc[4]) : 0;
-    const activityId = dataDesc.length >= 6 ? String(dataDesc[5]) : "";
-    const activityType = dataDesc.length >= 7 ? dataDesc[6] : "";
-    const description = dataDesc.length >= 8 ? dataDesc[7] : "";
+    const totalTimeSec = dataDesc && dataDesc.length >= 2 ? Number(dataDesc[1]) : 0;
+    const movingTimeSec = dataDesc && dataDesc.length >= 3 ? Number(dataDesc[2]) : 0;
+    const averageSpeedMeterPerSec = dataDesc && dataDesc.length >= 4 ? Number(dataDesc[3]) : 0;
+    const totalElevationMeters = dataDesc && dataDesc.length >= 5 ? Number(dataDesc[4]) : 0;
+    const activityId = dataDesc && dataDesc.length >= 6 ? String(dataDesc[5]) : "";
+    const activityType = dataDesc && dataDesc.length >= 7 ? dataDesc[6] : "";
+    const description = dataDesc && dataDesc.length >= 8 ? dataDesc[7] : "";
     const points = [] as any[];
     const xmlPoints = Array.prototype.slice.call(doc.getElementsByTagName("trkpt"));
     xmlPoints.forEach((val) => {
@@ -150,7 +151,7 @@ function parseGpxBase(gpx: string): BaseGpx | null {
         totalTimeSec
     });
     if (parse.success === false) {
-        console.log((parse as any).error);
+        console.error((parse as any).error);
     }
     return parse.success ? parse.data : null;
 }

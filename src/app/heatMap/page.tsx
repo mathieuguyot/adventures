@@ -1,6 +1,9 @@
 import dbConnect from "../../mongoose/dbConnect";
 import { mdbGpxModel } from "../../mongoose/gpx";
 import { Gpx } from "../../model/gpx";
+import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 import dynamic from "next/dynamic";
 const HeatMap = dynamic(() => import("./heatMap"), { ssr: false });
@@ -15,6 +18,11 @@ async function getGpxActivities(): Promise<Gpx[]> {
 }
 
 export default async function HeatMapPage() {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        redirect("/");
+    }
+
     const gpxActivities = await getGpxActivities();
 
     return <HeatMap gpxs={gpxActivities} />;

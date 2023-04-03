@@ -41,15 +41,16 @@ export function AdventureEditor({ adventure, adventureId, activities }: Adventur
                 produce(editedAdventure, (draft) => {
                     draft.parts.push({
                         activityId: activityId,
-                        mdDescription: gpx.description,
-                        name: gpx.name
+                        mdDescription: gpx.description ? gpx.description : "",
+                        name: gpx.name,
+                        images: []
                     });
                 })
             );
             setEditedActivities((activities) => [...activities, gpx]);
             setActivityId("");
         }
-    }, [activityId]);
+    }, [activityId, editedActivities, editedAdventure]);
 
     const removeActivity = useCallback((activityId: string) => {
         setEditedField("header");
