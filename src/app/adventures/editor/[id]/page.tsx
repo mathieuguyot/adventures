@@ -21,6 +21,10 @@ export default async function AdventureEditorPage({ params }) {
     const activities = await getActivitiesById(adventure.parts.map((a) => a.activityId));
 
     return (
-        <AdventureEditor adventure={adventure} adventureId={adventureId} activities={activities} />
+        <AdventureEditor
+            adventure={adventure}
+            adventureId={adventureId}
+            activities={activities ? activities : []}
+        />
     );
 }

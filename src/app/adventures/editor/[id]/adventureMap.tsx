@@ -29,7 +29,7 @@ function imageDimensionBasedOnZoom(zoom: number) {
     return 0;
 }
 
-export default function AdventureMap({ gpxs }: any) {
+export default function AdventureMap({ gpxs, images }: any) {
     const [zoom, setZoom] = useState(6);
 
     return (
@@ -44,17 +44,19 @@ export default function AdventureMap({ gpxs }: any) {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {/* <Marker
-                    position={[gpxs[0].points[1000].latitude, gpxs[0].points[100].longitude]}
-                    icon={icon({
-                        iconSize: [
-                            imageDimensionBasedOnZoom(zoom),
-                            imageDimensionBasedOnZoom(zoom)
-                        ],
-                        iconUrl:
-                            "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSJmd9k6nvVtYh0JT6-GShXkrnNWLAmwYO9Eb_pUrNIM00TBN8iVogL4TWbBxAfqQBk"
-                    })}
-                ></Marker> */}
+                {images.map((image, i) => (
+                    <Marker
+                        key={i}
+                        position={[image.latitude, image.longitude]}
+                        icon={icon({
+                            iconSize: [
+                                imageDimensionBasedOnZoom(zoom),
+                                imageDimensionBasedOnZoom(zoom)
+                            ],
+                            iconUrl: image.src
+                        })}
+                    />
+                ))}
                 {gpxs.map((gpx) => (
                     <Polyline key={gpx.activityId} positions={gpxToLeafletPolyline(gpx)} />
                 ))}

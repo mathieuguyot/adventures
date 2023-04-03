@@ -2,10 +2,11 @@
 
 import Editor from "@monaco-editor/react";
 import { produce } from "immer";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
     Adventure,
     extractLatLongImagesFromText,
+    LatLongImage,
     updateAdventure
 } from "../../../../model/adventure";
 import { ArrowDown, ArrowUp, Edit, TrashCan } from "@ricons/carbon";
@@ -79,6 +80,7 @@ export function AdventureEditor({ adventure, adventureId, activities }: Adventur
                 part.images = extractLatLongImagesFromText(part.mdDescription);
             });
         });
+        console.log(newEditedAdventure);
         setEditedAdventure(newEditedAdventure);
         updateAdventure(adventureId, newEditedAdventure);
     }, [editedAdventure, adventureId]);
@@ -106,10 +108,18 @@ export function AdventureEditor({ adventure, adventureId, activities }: Adventur
         [editedAdventure, editedField]
     );
 
+    const images = useMemo(() => {
+        let images: LatLongImage[] = [];
+        editedAdventure.parts.forEach((part) => {
+            images = images.concat(part.images);
+        });
+        return images;
+    }, [editedAdventure]);
+
     return (
         <div className="grid grid-cols-2" style={{ gridAutoRows: "calc(50vh - 16px)" }}>
             <div>
-                <AdventureMap gpxs={editedActivities} />
+                <AdventureMap gpxs={editedActivities} images={images} />
             </div>
             <div>
                 <Editor

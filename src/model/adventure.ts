@@ -4,7 +4,7 @@ const LatLongImage = z.object({
     name: z.string(),
     src: z.string(),
     latitude: z.number(),
-    longiture: z.number()
+    longitude: z.number()
 });
 
 const AdventurePart = z.object({
@@ -28,7 +28,7 @@ export type Adventure = z.infer<typeof Adventure>;
 export function extractLatLongImagesFromText(markdownText: string): LatLongImage[] {
     const imgRegex: RegExp = /<img.*?\/>/gm;
     const res = markdownText.matchAll(imgRegex);
-    const images = [];
+    const images: LatLongImage[] = [];
     if (res) {
         [...res].forEach((imgHtmlStr) => {
             const srcRegex: RegExp = /src="(.*?)"/m;

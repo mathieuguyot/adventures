@@ -1,6 +1,6 @@
-# Oura-sports
+# Adventures
 
-Welcome to oura sports, It's a personal sport portofolio project built with NextJS that comes with:
+Welcome to adventures, It's a personal sport portofolio project built with NextJS that comes with:
 
 -   An "Adventure" editor which consists of merging photos, gpx activities, enriched text to create blog posts of biking trips I've made
 -   Import and enrich strava profile export of activities (manual, no UI for this)
@@ -15,6 +15,8 @@ Welcome to oura sports, It's a personal sport portofolio project built with Next
 -   [react-markdown](https://github.com/remarkjs/react-markdown) & [monaco-editor](https://github.com/microsoft/monaco-editor) - Used to create markdown content and render it allowing me to easelly creating a blog system
 -   [Leaflet](https://github.com/Leaflet/Leaflet) - To handle cartography stuff
 -   [fit2gpx](https://github.com/dodo-saba/fit2gpx) - To parse strava profile export, converting .fit to .gpx and enriching .gpx files (bundled and edited in this project to handle minor changes)
+-   [nextauth](https://github.com/nextauthjs/next-auth) - To handle authentification using github oauth services
+-   [tailwindcss](https://github.com/tailwindlabs/tailwindcss) & [daisyui](https://github.com/saadeghi/daisyui) - to handle css and ui
 
 # Personal notes, TODOS
 

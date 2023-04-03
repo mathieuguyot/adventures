@@ -10,7 +10,15 @@ const mdbAdventureSchema = new mongoose.Schema<Adventure>({
         {
             name: { type: String, required: true },
             activityId: { type: String, required: true },
-            mdDescription: { type: String, required: true }
+            mdDescription: { type: String, required: true },
+            images: [
+                {
+                    name: { type: String, required: true },
+                    src: { type: String, required: true },
+                    latitude: { type: Number, required: true },
+                    longitude: { type: Number, required: true }
+                }
+            ]
         }
     ]
 });
@@ -32,7 +40,9 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
             "parts._id": 0,
             "parts.images._id": 0
         });
-        adventure = result.toObject();
+        if (result) {
+            adventure = result.toObject();
+        }
     } catch (err) {
         console.error(err);
     }
