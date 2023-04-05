@@ -7,7 +7,7 @@ const LeafletMap = dynamic(() => import("./map"), { ssr: false });
 export default async function Page({ params }) {
     const gpxs: Gpx[] | null = await getActivitiesById([params.id]);
 
-    if (gpxs.length === 0) {
+    if (!gpxs || gpxs.length === 0) {
         return <>Could not find that gpx</>;
     }
 

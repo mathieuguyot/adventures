@@ -8,11 +8,11 @@ export function Header() {
     return (
         <div className="bg-base-300 flex justify-between">
             <a href="/" className="btn btn-sm btn-ghost normal-case text-xl">
-                oura sports
+                Aventures
             </a>
             <div className="flex gap-2">
                 <a href="/adventures" className="btn btn-sm btn-ghost">
-                    Adventures
+                    Liste des aventures
                 </a>
                 {session && (
                     <>

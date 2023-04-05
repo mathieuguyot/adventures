@@ -18,7 +18,7 @@ export default async function AdventureViewerPage({ params }) {
             <MarkdownEditor markdown={adventure.mdHeader} />
             {adventure.parts.map((p) => (
                 <div key={p.activityId}>
-                    <p>{p.name}</p>
+                    <h2>{p.name}</h2>
                     <MarkdownEditor markdown={p.mdDescription} />
                 </div>
             ))}
