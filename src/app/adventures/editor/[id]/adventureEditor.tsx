@@ -11,10 +11,10 @@ import {
 } from "../../../../model/adventure";
 import { ArrowDown, ArrowUp, Edit, TrashCan } from "@ricons/carbon";
 
-import dynamic from "next/dynamic";
 import { getActivity, Gpx } from "../../../../model/gpx";
+
 import MarkdownEditor from "../../../common/markdownEditor";
-const AdventureMap = dynamic(() => import("./adventureMap"), { ssr: false });
+import AdventureMap from "../../adventureMap";
 
 type AdventureEditorProps = {
     adventure: Adventure;
@@ -73,6 +73,14 @@ export function AdventureEditor({ adventure, adventureId, activities }: Adventur
         );
     }, []);
 
+    const renameActivity = useCallback((index: number, newName: string) => {
+        setEditedAdventure((adv) =>
+            produce(adv, (draft) => {
+                draft.parts[index].name = newName;
+            })
+        );
+    }, []);
+
     const saveActivity = useCallback(async () => {
         // TODO check for failurek, do loading
         const newEditedAdventure = produce(editedAdventure, (draft) => {
@@ -119,7 +127,11 @@ export function AdventureEditor({ adventure, adventureId, activities }: Adventur
     return (
         <div className="grid grid-cols-2" style={{ gridAutoRows: "calc(50vh - 16px)" }}>
             <div>
-                <AdventureMap gpxs={editedActivities} images={images} />
+                <AdventureMap
+                    gpxs={editedActivities}
+                    images={images}
+                    minHeight="calc(50vh - 16px)"
+                />
             </div>
             <div>
                 <Editor
@@ -176,7 +188,14 @@ export function AdventureEditor({ adventure, adventureId, activities }: Adventur
                             {editedAdventure.parts.map((part, i) => {
                                 return (
                                     <tr key={i}>
-                                        <td>{part.name}</td>
+                                        <td>
+                                            <input
+                                                className="input input-bordered input-xs max-w-xs"
+                                                style={{ outline: 0, width: "100%" }}
+                                                onChange={(e) => renameActivity(i, e.target.value)}
+                                                value={part.name}
+                                            />
+                                        </td>
                                         <td>
                                             <button
                                                 className="btn btn-xs btn-ghost"

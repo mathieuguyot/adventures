@@ -2,7 +2,7 @@
 
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Polyline, Marker, useMapEvents } from "react-leaflet";
-import { gpxToLeafletPolyline } from "../../../../model/gpx";
+import { gpxToLeafletPolyline } from "../../model/gpx";
 import { icon } from "leaflet";
 import { useState } from "react";
 
@@ -29,13 +29,13 @@ function imageDimensionBasedOnZoom(zoom: number) {
     return 0;
 }
 
-export default function AdventureMap({ gpxs, images }: any) {
+export default function AdventureMap({ gpxs, images, minHeight }: any) {
     const [zoom, setZoom] = useState(6);
 
     return (
         <div>
             <MapContainer
-                style={{ minHeight: "calc(50vh - 16px)", width: "100%" }}
+                style={{ minHeight, width: "100%" }}
                 zoom={zoom}
                 center={[46.2276, 2.2137]}
             >

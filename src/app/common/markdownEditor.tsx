@@ -7,7 +7,7 @@ type MarkdownEditorProps = {
 
 export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
     return (
-        <div style={{ overflowWrap: "break-word" }}>
+        <div style={{ overflowWrap: "break-word", textJustify: "auto" }}>
             <ReactMarkdown className="markdown" rehypePlugins={[rehypeRaw]}>
                 {markdown}
             </ReactMarkdown>

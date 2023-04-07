@@ -3,7 +3,7 @@ export default async function IndexPage() {
         <div className="prose">
             <h2 style={{ marginTop: 30 }}>Bienvenu sur Aventures,</h2>
             <p>
-                Ici, je partage avec vous certains voyages que j&apos;ai eu la change de vivres !
+                Ici, je partage avec vous certains voyages que j&apos;ai eu la chance de vivre !
                 <br />
                 À vélo, à pieds ou en van avec des amis, dans les Pyrénées comme sous la mer
                 méditerranéenne, j&apos;aime explorer et découvrir de nouveaux espaces.
