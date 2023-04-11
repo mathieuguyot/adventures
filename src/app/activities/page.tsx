@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Gpx } from "../../model/gpx";
 import moment from "moment";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../pages/api/auth/[...nextauth]";
 import { redirect } from "next/navigation";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 async function getGpxActivities(): Promise<Gpx[]> {
     await dbConnect();

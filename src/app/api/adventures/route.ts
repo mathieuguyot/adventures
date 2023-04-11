@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "../../../mongoose/dbConnect";
 import { Adventure } from "../../../model/adventure";
 import { mdbAdventureModel } from "../../../mongoose/adventure";
-import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 
 export async function PUT(request: Request) {

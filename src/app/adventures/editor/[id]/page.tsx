@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { getAdventure } from "../../../../mongoose/adventure";
 import { getActivitiesById } from "../../../../mongoose/gpx";
 import { AdventureEditor } from "./adventureEditor";
-import { authOptions } from "../../../../../pages/api/auth/[...nextauth]";
+import { authOptions } from "../../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
 export default async function AdventureEditorPage({ params }) {

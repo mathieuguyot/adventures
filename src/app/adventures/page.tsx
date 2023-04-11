@@ -2,7 +2,7 @@ import dbConnect from "../../mongoose/dbConnect";
 import { mdbAdventureModel } from "../../mongoose/adventure";
 import CreateForm from "./createForm";
 import Link from "next/link";
-import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 
 async function getAdventures(): Promise<{ id: string; name: string }[]> {
